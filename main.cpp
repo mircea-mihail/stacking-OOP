@@ -49,7 +49,7 @@ public:
     bool operator == (const stack &rhs) const;
     bool operator!= (const stack &rhs) const;
     stack& operator= (const stack &rhs);
-    
+
     int operator>> (int toBeAdded);
     int operator<< (int);
 
@@ -88,16 +88,20 @@ int main(){
             case(111):
                 cout << "the current position: " << v[stack::get_stack_track()].getCur() << endl;
                 break;
+
             case(222):
                 cout << "the pointer to the current stack: " << v[stack::get_stack_track()].getEls() << endl;
                 break;
+
             case(333):
                 cout << v[stack::get_stack_track()];
                 break;
+
             case(444):
                 cout << "cin >> ";
                 cin >> v[stack::get_stack_track()];
                 break;
+
             case(555):
                 v[stack::get_stack_track()].pall();
                 break;
@@ -105,6 +109,7 @@ int main(){
             case(11):
                 cout << "current stack: " << stack::get_stack_track() << endl;
                 break;
+
             case(22):
                 if(stack::get_stack_total() == 1) {
                     cout << "unable to delete the only stack\n";
@@ -140,6 +145,7 @@ int main(){
                 cout << "current stack: "<< stack::get_stack_track() << endl;
 
                 break;
+
             case(33):
                 if(ballocated)
                     delete[] b;
@@ -161,6 +167,7 @@ int main(){
                 cin >> bv;
                 v[stack::get_stack_track()].push(bv);
                 break;
+
             case(44):
                 cout << "what stack to switch to? (0 to " << stack::get_stack_total()-1 << ") ";
                 int saux;
@@ -174,6 +181,7 @@ int main(){
                     stack::set_stack_track(saux);
                 }
                     break;
+
             case(55):
                 delete[] v;
                 v = new stack[1];
@@ -196,6 +204,7 @@ int main(){
                 else
                     cout << "the stacks differ\n";
                 break;
+
             case(21):
                 cout << "which stacks to compare? (0 - " << stack::get_stack_total()-1 << ") ";
                 int m1, n1;
@@ -209,33 +218,40 @@ int main(){
                 else
                     cout << "the stacks are the same\n";
                 break;
+
             case(31):
                 v[stack::get_stack_track()] << 0;
                 break;
+
             case(41):
                 cout << "input value needed ";
                 int aux1;
                 cin >> aux1;
                 v[stack::get_stack_track()] >> aux1;
                 break;
+
             case(51):
                 break;
 
             case(1):
                 v[stack::get_stack_track()].top();
                 break;
+
             case(2):
                 v[stack::get_stack_track()].pop();
                 break;
+
             case(3):
                 cout << "input value needed ";
                 int aux;
                 cin >> aux;
                 v[stack::get_stack_track()].push(aux);
                 break;
+
             case(4):
                 v[stack::get_stack_track()].len();
                 break;
+
             case(5):
                 check = false;
                 cout << "thanks for \"playing\"\n"; break;
