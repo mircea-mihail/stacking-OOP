@@ -1,0 +1,35 @@
+/*
+ * Tema 1 - Cerințe Generale:
++       implementare în C++ folosind clase
+
++        constructori de inițializare
++        constructor de copiere
++        destructori
+
++        operator de atribuire
++        operator == și operator != (unde are sens)
+        supraîncărcarea operatorilor << și >> pentru ieșiri și intrări de obiecte
+
++        get / set pentru toate datele membru
+
++        alocare dinamică
++        să se poată realiza citirea și afișarea a n obiecte
+
++        programul să aibă un meniu interactiv
+        folosiți const peste tot unde puteți
+
++        nu folosiți std::string, std::vector, std::queue, std::stack, etc.
+
+P5. Stivă(Stack) : numere întregi
+
++        Membrii privați pentru vectorul propriu zis și capacitatea maximă de stocare
+
++        rescriere operator<< pentru a adăuga un element în stivă
++        rescriere operator>> pentru a scoate un element din stivă
+
++        metodă publică top pentru a vedea următorul element din stivă
++        metodă publică pop pentru a scoate un element din stivă
++        metodă publică push pentru a adăuga un element în stivă
++        metodă publică len pentru a obține numărul de elemente prezente în stivă
+*/
+
