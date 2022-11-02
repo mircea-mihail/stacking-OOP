@@ -7,11 +7,7 @@ using namespace std;
 
 //to always delete before new allocation, except constructors
 
-//pointeri: const (return/ parametrii)
-//referinta const
-
 //last in first out container
-
 class stack{
     int cur;
     int *els;
@@ -31,9 +27,9 @@ public:
     void bcopy();
     void scopy();
 
-    //getting 4 [[nondiscard]] warnings, but maybe i don't always want to use the return value of my function
-    int getCur()const;
-    const int* getEls()const;
+    //getting 2 [[nodiscard]] warnings, but maybe I don't always want to use the return value of my function
+    [[nodiscard]] int getCur()const;
+    [[nodiscard]] const int* getEls()const;
     static int get_stack_track();
     static int get_stack_total();
 
@@ -53,32 +49,12 @@ public:
     bool operator == (const stack &rhs) const;
     bool operator!= (const stack &rhs) const;
     stack& operator= (const stack &rhs);
+    
     int operator>> (int toBeAdded);
     int operator<< (int);
 
-    // functie friend
-    friend ostream& operator<<(ostream &os, stack &s) {
-        // desi suntem in interiorul clasei nu avem acces la setName, name, group in mod direct
-        // avem acces la membrii si metodele private prin intermediul obiectului s
-
-        if (!s.els) {
-            os << "cout << the stack is empty\n";
-            return os;
-        }
-
-        os << "cout << ";
-        s.top();
-
-        return os;
-    }
-
-    friend istream& operator>>(istream &is, stack &s) {
-        int tval;
-        is >> tval;
-        s.push(tval);
-
-        return is;
-    }
+    friend ostream& operator<<(ostream &os, stack &s);
+    friend istream& operator>>(istream &is, stack &s);
 
     ~stack();
 };
@@ -436,6 +412,26 @@ int stack::operator>> (int toBeAdded){
 
 int stack::operator<< (int){
     return (*this).pop();
+}
+
+ostream& operator<<(ostream &os, stack &s) {
+    if (!s.els) {
+        os << "cout << the stack is empty\n";
+        return os;
+    }
+
+    os << "cout << ";
+    s.top();
+
+    return os;
+}
+
+istream& operator>>(istream &is, stack &s) {
+    int tval;
+    is >> tval;
+    s.push(tval);
+
+    return is;
 }
 
 stack::~stack(){
