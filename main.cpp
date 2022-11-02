@@ -21,9 +21,6 @@ using namespace std;
 
 //last in first out container
 
-class stack;
-void add_new_stack(stack *b, stack *v, int &bv, bool &ballocated);
-
 class stack{
     int cur;
     int *els;
@@ -43,6 +40,7 @@ public:
     void bcopy();
     void scopy();
 
+    //getting 4 [[nondiscard]] warnings, but maybe i don't always want to use the return value of my function
     int getCur()const;
     const int* getEls()const;
     static int get_stack_track();
@@ -68,19 +66,17 @@ public:
     int operator<< (int);
 
     //std is redundant because of #include <iostream>
-//    friend std::istream& operator>>(std::istream &is, stack &s) {
-//        // desi suntem in interiorul clasei nu avem acces la setName, name, group in mod direct
-//        // avem acces la membrii si metodele private prin intermediul obiectului s
-//
-//        int tval; // grija la pointeri
-//        is >> tval;
-//
-//        s.setName(buf); // s.setName nu setName
-//
-//        is >> s.group; // s.group nu group
-//
-//        return is;
-//    }
+    friend std::istream& operator>>(std::istream &is, stack &s) {
+        // desi suntem in interiorul clasei nu avem acces la setName, name, group in mod direct
+        // avem acces la membrii si metodele private prin intermediul obiectului s
+
+        int tval; // grija la pointeri
+        is >> tval;
+
+        s.push(tval);
+
+        return is;
+    }
 
     ~stack();
 };
@@ -88,27 +84,29 @@ public:
 int stack::stack_track = 0;
 int stack::stack_total = 1;
 
-void add_new_stack(stack *b, stack *v, int &bv, bool &ballocated){
-    if(ballocated)
-        delete[] b;
-    b = new stack[stack::get_stack_total() + 1]; ballocated = true;
-    for(int i = 0; i < stack::get_stack_total(); i++) {
-        b[i] = v[i];
-    }
+//it's looking bleak for this function
 
-    delete[] v;
-    v = new stack[stack::get_stack_total() + 1];
-    for(int i = 0; i < stack::get_stack_total(); i++) {
-        v[i] = b[i];
-    }
-    //stack_track = stack_total;
-    stack::set_stack_track(stack::get_stack_total());
-    //stack_total ++;
-    stack::set_stack_total(stack::get_stack_total() + 1);
-    cout << "pick a build value ";
-    cin >> bv;
-    v[stack::get_stack_track()].push(bv);
-}
+//void add_new_stack(stack *b, stack *v, int &bv, bool &ballocated){
+//    if(ballocated)
+//        delete[] b;
+//    b = new stack[stack::get_stack_total() + 1]; ballocated = true;
+//    for(int i = 0; i < stack::get_stack_total(); i++) {
+//        b[i] = v[i];
+//    }
+//
+//    delete[] v;
+//    v = new stack[stack::get_stack_total() + 1];
+//    for(int i = 0; i < stack::get_stack_total(); i++) {
+//        v[i] = b[i];
+//    }
+//    //stack_track = stack_total;
+//    stack::set_stack_track(stack::get_stack_total());
+//    //stack_total ++;
+//    stack::set_stack_total(stack::get_stack_total() + 1);
+//    cout << "pick a build value ";
+//    cin >> bv;
+//    v[stack::get_stack_track()].push(bv);
+//}
 
 int main(){
     stack *b; bool ballocated = false;
@@ -128,9 +126,9 @@ int main(){
         cout << "\n1 -- top       2 -- pop       3 -- push       4 -- length       5 -- terminate\n";
         //messing with multiple stacks
         cout << "11 stack id    22 rm stack    33 new stack    44 pick stack     55 clear all\n";
-        cout << "12 a == b ?    21 a != b ?    31 pop w <<     41 push w >>\n";
+        cout << "12 a == b ?    21 a != b ?    31 pop w <<     41 push w >>      51 do nothing\n";
         //kind of illegal in a stack?
-        cout << "111 get pos    222 get sptr   333 print all\n\n";
+        cout << "111 get pos    222 get sptr   333 print all   444 cin w >>      555 cout w <<\n\n";
         cin >> a;
         switch(a){
             case(111):
@@ -142,6 +140,10 @@ int main(){
             case(333):
                 v[stack::get_stack_track()].pall();
                 break;
+            case(444):
+                cout << "cin >> ";
+                cin >> v[stack::get_stack_track()];
+                break;
 
             case(11):
                 cout << "current stack: " << stack::get_stack_track() << endl;
@@ -151,6 +153,8 @@ int main(){
                     cout << "unable to delete the only stack\n";
                     break;
                 }
+                if(ballocated)
+                    delete[] b;
                 b = new stack[stack::get_stack_total() - 1]; ballocated = true;
                 for(int i = 0; i < stack::get_stack_track(); i++) {
                     b[i] = v[i];
@@ -162,6 +166,7 @@ int main(){
                 //stack_total --;
                 stack::set_stack_total(stack::get_stack_total() - 1);
 
+                delete[] v;
                 v = new stack[stack::get_stack_total()];
                 for(int i = 0; i < stack::get_stack_total(); i++) {
                     v[i] = b[i];
@@ -179,7 +184,26 @@ int main(){
 
                 break;
             case(33):
-                add_new_stack(b, v, bv, ballocated);
+                //add_new_stack(b, v, bv, ballocated);
+                if(ballocated)
+                    delete[] b;
+                b = new stack[stack::get_stack_total() + 1]; ballocated = true;
+                for(int i = 0; i < stack::get_stack_total(); i++) {
+                    b[i] = v[i];
+                }
+
+                delete[] v;
+                v = new stack[stack::get_stack_total() + 1];
+                for(int i = 0; i < stack::get_stack_total(); i++) {
+                    v[i] = b[i];
+                }
+                //stack_track = stack_total;
+                stack::set_stack_track(stack::get_stack_total());
+                //stack_total ++;
+                stack::set_stack_total(stack::get_stack_total() + 1);
+                cout << "pick a build value ";
+                cin >> bv;
+                v[stack::get_stack_track()].push(bv);
                 break;
             case(44):
                 cout << "what stack to switch to? (0 to " << stack::get_stack_total()-1 << ") ";
@@ -238,7 +262,9 @@ int main(){
                 cin >> aux1;
                 v[stack::get_stack_track()] >> aux1;
                 break;
-
+            case(51):
+                break;
+            
             case(1):
                 v[stack::get_stack_track()].top();
                 break;
